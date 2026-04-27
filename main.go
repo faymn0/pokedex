@@ -8,15 +8,17 @@ import (
 )
 
 func main() {
+	commandRegistry := newCommandRegistry()
+	context := newCliContext()
+
 	scanner := bufio.NewScanner(os.Stdin)
-	commandRegistry := createCommandRegistry()
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
 		input := cleanInput(scanner.Text())
 		command , ok := commandRegistry[input[0]]
 		if ok {
-			err := command.callback()
+			err := command.callback(&context)
 			if err != nil {
 				log.Fatal(err)
 			}

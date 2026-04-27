@@ -1,0 +1,6 @@
+[tools]
+go = "latest"
+
+[tasks.test]
+description = "Run tests"
+run = "go test ./..."

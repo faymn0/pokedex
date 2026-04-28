@@ -11,5 +11,5 @@ func cleanInput(text string) []string {
 			result = append(result, f)
 		}
 	}
-	return result 
+	return result
 }

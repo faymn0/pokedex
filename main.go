@@ -3,25 +3,27 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 )
 
 func main() {
-	commandRegistry := newCommandRegistry()
+	commands := newCommandRegistry()
 	context := newCliContext()
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
-		input := cleanInput(scanner.Text())
-		command , ok := commandRegistry[input[0]]
-		if ok {
-			err := command.callback(&context)
-			if err != nil {
-				log.Fatal(err)
-			}
+		context.input = cleanInput(scanner.Text())
+		command, ok := commands.get(context.input[0])
+		if !ok {
+			fmt.Println("invalid command")
+			continue
+		}
+
+		err := command.callback(&context)
+		if err != nil {
+			fmt.Println(err)
 		}
 	}
 }
